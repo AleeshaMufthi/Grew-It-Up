@@ -1,0 +1,244 @@
+EDITPRODUCT.EJS
+<%- include('../Layout/adminHeader.ejs') %>
+    <form action="" method="post" enctype="multipart/form-data" id="product-form"
+    onsubmit="return validationChecking()">
+
+        <section class="content-main">
+            <div class="row">
+                <div class="col-12">
+                    <div class="content-header">
+                        <h2 class="content-title">Add New Product</h2>
+                        <div>
+                            <a href='/admin/prdouctList'> <button
+                                    class="btn btn-light rounded font-sm mr-5 text-body hover-up">cancel</button></a>
+                            <input type="submit" class="btn btn-md rounded font-sm hover-up" value="Upload"
+                              >
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <input type="hidden" name="product_id" value="<%= product._id %>" >
+                            <div class="mb-4">
+                                <label for="product_title" class="form-label">Product title</label>
+                                <input type="text" placeholder="Type here"  value="<%= product.name %>" name="name" class="form-control"
+                                    id="product_title">
+                                <div class="error-message" style="color: red;" id="product_title-error"></div>
+                            </div>
+
+                            <div class="row gx-3">
+                                <div class="col-md-6  mb-3">
+                                    <label for="inputPassword4" class="form-label">category</label>
+                                    <select name="category" class="form-control">
+                                        // <option value="">Select a Category
+                                        // </option>
+                                        <% categories?.forEach(category=> { %>
+                                            <option value="<%= category._id %>"  <% if (category._id.toString() === product.category.toString()) { %>disabled selected <% } %> >
+                                                <%= category.name %>
+                                            </option>
+                                        
+                                            <% }); %>
+                                    </select>
+                                    <div class="error-message" style="color: red;" id="product_brand-error"></div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div> <!-- card end// -->
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row gx-3">
+
+                                <div class="col-md-4">
+                                    <label for="inputPrice" class="form-label">price</label>
+                                    <input type="text" class="form-control"  value="<%= product.price %>" name="price" id="inputprice"
+                                        placeholder="enter the price">
+                                    <div class="error-message" style="color: red;" id="product_price-error"></div>
+                                </div>
+
+                                <div class="col-md-4  mb-3">
+                                    <label class="form-label">Quantity</label>
+                                    <input type="number" name="quantity"  value="<%= product.quantity %>" placeholder="Type here"
+                                        class="form-control" id="product_quantity" onchange="updateQuantity()">
+                                    <div class="error-message" style="color: red;" id="product_quantity-error"></div>
+                                </div>
+
+                          
+                                
+
+                            </div>
+
+
+
+
+                            <div>
+                                <label class="form-label">Description</label>
+                                <textarea placeholder="Type here" name="description"   class="form-control"
+                                    rows="4"><%= product.description %></textarea>
+                                <div class="error-message" style="color: red;" id="description-error"></div>
+
+                            </div>
+                        </div>
+                    </div> 
+
+                </div>
+
+
+                <div class="col-lg-4">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h4>Picture</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class=" row d-flex justify-content-around flex-row">
+                                        <div class="card col-lg-8 p-2">
+                                            <div class="images-container">
+                                                <div class="image-preview-container d-flex flex-wrap justify-content-around">
+
+                                                    <% if (product.image && product.image.length > 0) { %>
+                                                        <% for (let i = 0; i < product.image.length; i++) { %>
+                                                            <div class="image-container border-1 mb-4">
+                                                                <input type="checkbox" id="delete-checkbox<%= i %>" name="deletecheckbox" value="<%= i%>">
+                                                                <label for="delete-checkbox<%= i %>">Delete</label>
+                                                                <img class="image-preview"  src="/assets/imgs/productIMG/<%= product.image[i] %>" alt="Default">
+                                                            </div>
+                                                        <% } %>
+                                                    <% } else{ %>
+                                                        <div class="image-container border-1 mb-4">
+                                                            <img class="image-preview" style="width: 100px; height: 100px; margin-bottom: 20px;" src="/uploadimage.svg" alt="Default">
+                                                        </div>
+                                                    <% } %>
+                                                </div>
+                                                <input class="form-control" name="images"  multiple="multiple" type="file" onchange="displayImages(this)">
+                                                <div class="error-message" style="color: red;" id="product_image-error"></div>
+                                            </div>                                
+                                        </div>
+                                        <script>
+                                            function displayImages(input) {
+                                                const previewContainer = document.querySelector('.image-preview-container');
+                                                previewContainer.innerHTML = ''; // Clear previous previews
+                                        
+                                                if (input.files && input.files.length > 0) {
+                                                    for (let i = 0; i < input.files.length; i++) {
+                                                        const reader = new FileReader();
+                                                        reader.onload = function (e) {
+                                                            const imagePreview = document.createElement('div');
+                                                            imagePreview.classList.add('image-container');
+                                                            const img = document.createElement('img');
+                                                            img.src = e.target.result;
+                                                            img.style.width = '100px';
+                                                            img.style.height = '100px';
+                                                         
+                                                            img.classList.add('image-preview');
+                                                            imagePreview.appendChild(img);
+                                                            previewContainer.appendChild(imagePreview);
+                                                        };
+                                                        reader.readAsDataURL(input.files[i]);
+                                                    }
+                                                } else {
+                                                    const defaultImagePreview = document.createElement('div');
+                                                    defaultImagePreview.classList.add('image-container');
+                                                    const defaultImg = document.createElement('img');
+                                                    defaultImg.src = '/uploadimage.svg';
+                                                    defaultImg.style.width = '100px';
+                                                    defaultImg.style.height = '100px';
+                                                  
+                                                    defaultImg.classList.add('image-preview');
+                                                    defaultImagePreview.appendChild(defaultImg);
+                                                    previewContainer.appendChild(defaultImagePreview);
+                                                }
+                                            }
+
+                                           
+                                        </script>
+                                    </div>
+                                </div>
+                            </div> 
+                          >
+                        </div>
+
+              
+
+
+
+
+                <div id="invalid">
+                    <% if (typeof message !=='undefined' && message) { %>
+                        <p style="color: rgb(8, 96, 0);" id="message">
+                            <%= message %>
+                        </p>
+                        <% } %>
+                                      
+                </div>
+            </div> <!-- card end// -->
+            </div>
+
+            </div>
+        </section>
+    </form>
+
+
+
+    <script>
+
+    function updateQuantity() {
+        const productQuantity = document.getElementById("product_quantity");
+        const productQuantityError = document.getElementById("product_quantity-error");
+
+        productQuantityError.innerHTML = isNaN(productQuantity.value) || productQuantity.value.trim() === "" || parseInt(productQuantity.value) < 0 ? "Please enter a valid quantity" : "";
+    }
+
+    function displayImage(imageNumber, input) {
+            const preview = document.getElementById(`image-preview${imageNumber}`);
+
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                preview.src = '';
+            }
+        }
+
+    function viewImage(event, imageIndex) {
+    const imgView = document.getElementById(`imgView${imageIndex}`);
+    imgView.src = URL.createObjectURL(event.target.files[0]);
+    }
+
+
+    function validationChecking() {
+        const product_title = document.getElementById("product_title").value;
+        const description = document.getElementById("description").value;
+        const product_price = document.getElementById("product_price").value;
+        const discount_price = document.getElementById("discount_price").value;
+        const product_category = document.querySelector('select[name="category"]').value.trim();
+        const product_quantity = document.getElementById("product_quantity").value; 
+     }
+        const product_title_error = document.getElementById("product_title-error");
+        const description_error = document.getElementById("description-error");
+        const product_price_error= document.getElementById("product_price-error");
+        const product_category_error = document.getElementById("product_category-error");
+        const discount_price_error = document.getElementById("discount_price-error");
+        const product_quantity_error = document.getElementById("product_quantity-error"); 
+
+        product_title_error.innerHTML = product_title.trim() === "" ? "Please enter product name" : "";
+        description_error.innerHTML = description.trim() === "" ? "Please enter product description" : "";
+        // Check if product_price is not a number or if it's less than or equal to 0
+        product_price_error.innerHTML = isNaN(product_price) || product_price.trim() === "" || parseFloat(product_price) <= 0 ? "Please enter a valid price (greater than 0)" : "";
+        product_category_error.innerHTML = product_category.trim() === "" ? "Please enter product category" : "";
+        discount_price_error.innerHTML = isNaN(discount_price) || discount_price.trim() === "" || parseFloat(discount_price) < 0 ? "Please enter a valid discount price " : "";
+        product_quantity_error.innerHTML = isNaN(product_quantity) || product_quantity.trim() === "" || parseInt(product_quantity) < 0 ? "Please enter a valid quantity" : "";
+
+       
+       
+        return !(product_title.trim() === "" || description.trim() === "" || product_price.trim() === ""|| discount_price.trim() === "" || product_category.trim() === "" || product_quantity.trim() === ""); 
+
+    </script>
+
+
+    <%- include('../Layout/adminFooter.ejs') %>

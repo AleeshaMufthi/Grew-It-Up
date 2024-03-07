@@ -1,0 +1,337 @@
+
+<%- include('../Layout/UserHeader.ejs') %>
+
+<main class="main">
+  <div class="page-header breadcrumb-wrap">
+      <div class="container">
+          <div class="breadcrumb">
+              <a href="index.js" rel="nofollow">Home</a>
+              <span></span> Pages
+              <span></span> Account
+          </div>
+      </div>
+  </div>
+  <section class="pt-150 pb-150">
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-10 m-auto">
+                  <div class="row">
+                      <div class="col-md-4">
+                          <div class="dashboard-menu">
+                              <ul class="nav flex-column" role="tablist">
+                              
+                                <li class="nav-item">
+                                    <a class="nav-link"   href="/userprofile" ><i class="fi-rs-user mr-10"></i>Account details</a>
+                                </li>
+
+                                <li class="nav-item">
+                                  <a class="nav-link" href="/userAddress"><i class="fi-rs-marker mr-10"></i>My Address</a>
+                                </li>
+
+                                  <li class="nav-item">
+                                      <a class="nav-link"  href="/orderSuccess" ><i class="fi-rs-shopping-bag mr-10"></i>Orders</a>
+                                  </li>
+
+                                  <li class="nav-item">
+                                    <a class="nav-link"  href="/Wallet" ><i class="fi-rs-shopping-bag mr-10"></i>Wallet</a>
+                                  </li>
+
+                                  <li class="nav-item">
+                                    <a class="nav-link"  href="/coupons" ><i class="fi-rs-shopping-bag mr-10"></i>coupons</a>
+                                </li>
+                              
+                                <li class="nav-item">
+                                      <a class="nav-link" href="/logout"><i class="fi-rs-sign-out mr-10"></i>Logout</a>
+                                </li>
+                              </ul>
+                          </div>
+                      </div>
+                      <div class="col-md-8">
+                      
+                             
+                                  <div class="card">
+                                    <section class="content-body p-xl-4">
+                                      <form action="/userprofile" enctype="multipart/form-data"  method="post" onsubmit="return validationChecking()">
+                                          <div class="row">
+                                              <div class="col-lg-8">
+                                                  <div class="row gx-3">
+
+                                                    <form action="/userprofile" enctype="multipart/form-data" method="post" onsubmit="return validationChecking()">
+                                                         <input type="hidden" name="user_id"  value="<%=userData._id%>">
+                                                      
+                                                         <div class="col-12  mb-3">
+                                                          <label class="form-label"> Name</label>
+                                                           <input class="form-control" name="name" value="<%=userData.name%>" id="user_name"  type="text" placeholder="Type here" disabled>
+                                                            <div id="errorName" class="ms-2 text-danger"></div>
+                                                         </div> 
+                                                   
+                                                      <div class="col-lg-12  mb-3">
+                                                          <label class="form-label">Email</label>
+                                                          <input class="form-control" type="email" name="email" value="<%=userData.email%>" id="user_email" placeholder="example@mail.com" disabled>
+                                                          <div id="errorMail" class="ms-2 text-danger"></div>
+                                                        </div> 
+
+                                                      <div class="col-lg-12  mb-3">
+                                                          <label class="form-label">Phone</label>
+                                                          <input class="form-control" type="tel" name="mobile" value="<%=userData.mobile%>" id="user_phone" placeholder="+1234567890" disabled>
+                                                          <div id="errorMobile" class="ms-2 text-danger"></div>
+                                                      </div> 
+                                                    
+                                              
+                                             
+                                                  </div> 
+                                              </div> 
+                                              <aside class="col-lg-4">
+                                                  <figure class="text-lg-center">
+                                                      <% 
+                                                          if (userData.image) {
+                                                              %><img class="img-lg mb-3 img-avatar rounded-circle" id="previewImage" src="/userassets/imgs/user/<%=userData.image %>" alt="User Photo" style="max-width: 100%; max-height: 200px;"><%
+                                                          }else{
+                                                              %><img class="img-lg mb-3 img-avatar rounded-circle" id="previewImage" src="/userassets/imgs/user/istockphoto-1300845620-612x612.jpg" alt="User Photo" style="max-width: 100%; max-height: 200px;"><%
+      
+                                                          }
+                                                          %>
+                                                      <figcaption>
+                                                        <label for="fileUpload"  class="btn btn-light rounded font-md">
+                                                          <i class="icons material-icons md-backup font-md"></i> Upload
+                                                        </label>
+                                                        <input type="file" name="image" id="fileUpload" style="display: none;"  >
+                                                        <div
+                                                          id="errorfileUpload"
+                                                          class="ms-2 text-danger"
+                                                        ></div>
+                                                      </figcaption>
+                                                    </figure>
+                                              </aside> 
+                                          </div> 
+                                          <br>
+                                          <button class="btn btn-primary" type="submit" id="saveChangesBtn" style="display: none;">Save changes</button>
+
+                                      </form>
+                                           <!-- Edit Button Section -->
+                                     <div class="col-lg-12 mt-3">
+                                      <button class="btn btn-light" onclick="toggleEditAllFields()">Edit profile</button>
+                                     </div>
+                                    </div>  
+                                  </div>  
+                                
+
+                                
+
+                                    
+                                      <hr class="my-5">
+                                      <div class="row" style="max-width:920px">
+                                          <div class="col-md">
+                                              <article class="box mb-3 bg-light">
+                                                  <button class="btn float-end btn-light btn-sm rounded font-md"  data-bs-toggle="modal" data-bs-target="#exampleModal" >Change</button>
+                                                  <h6>Change Password</h6>
+                                                  <small class="text-muted d-block" style="width:70%">You can reset or change your password by clicking here</small>
+                                              </article>
+                                          </div> 
+                                          <!-- <div class="col-md">
+                                            <article class="box m-3 bg-light d-flex">
+                                              <h5>referral Code </h5> : <h5>
+                                                <%=userData.referralCode%>
+                                              </h5>
+                                            </article>
+                                            
+                                          </div>  -->
+                                      </div> 
+                                   
+      
+                                  </section> 
+                                  </div>
+                       
+                           
+                         
+                            
+                     
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Enter new password</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form  action="/resetPassword" method="post" onsubmit="return validationPasswordChecking()">
+            <div class="form-group">
+               <input type="password" id="currentPassword" name="currentPassword" placeholder="Current Password">
+               <div id="errorCurrentPassword" class="ms-2 text-danger"></div>
+            </div>
+            <div class="form-group">
+                <input type="password" id="password" name="password" placeholder="New Password"/>
+                <div id="errorpassword" class="ms-2 text-danger"></div>
+            </div>
+            <div class="form-group">
+                <input type="password" id="cpassword" placeholder="Confirm Password"/>
+                <div id="errorcpassword" class="mt-0 ms-2 text-danger"></div>
+            </div>
+                                 
+                                
+                             
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+  </section>
+</main>
+
+
+<script>
+  function toggleEditAllFields() {
+      const fields = ['user_name', 'user_email', 'user_phone'];
+      const saveChangesBtn = document.getElementById('saveChangesBtn');
+
+      for (const field of fields) {
+          const inputField = document.getElementById(field);
+          inputField.disabled = !inputField.disabled;
+      }
+
+      // Toggle visibility of Save changes button
+      saveChangesBtn.style.display = saveChangesBtn.style.display === 'none' ? 'block' : 'none';
+  }
+
+  document.getElementById('fileUpload').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById('previewImage').src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+  
+
+  document.addEventListener('DOMContentLoaded', function () {
+  const user_name = document.getElementById("user_name");
+  const errorName = document.getElementById("errorName");
+  const user_phone = document.getElementById("user_phone");
+  const errorMobile = document.getElementById("errorMobile");
+  const fileUpload = document.getElementById("fileUpload");
+  const errorfileUpload = document.getElementById("errorfileUpload");
+  const password = document.getElementById("password");
+  const errorpassword = document.getElementById("errorpassword");
+  const cpassword = document.getElementById("cpassword");
+  const errorcpassword = document.getElementById("errorcpassword");
+
+
+  user_name.addEventListener('input', function () {
+    errorName.innerHTML = user_name.value.trim() === "" ? "Please enter user name" : /^[a-zA-Z ]+$/.test(user_name.value) == false ? "Please enter alphabets only" : "";
+  });
+
+  user_phone.addEventListener('input', function () {
+    errorMobile.innerHTML = user_phone.value.trim() === "" ? "Please enter user phone number" : /^\d{10}$/.test(user_phone.value) == false ? "Please enter valid phone number" : /^(?!(\d)\1+$)\d{10}$/.test(user_phone.value) == false ? "Please enter a phone number with different digits" : "";
+  });
+
+  password.addEventListener('input', function () {
+      errorpassword.innerHTML = password.value.trim() === "" ? "Please enter password" : 
+                                  password.value.length < 8 ? "Please enter a minimum of 8 characters" :
+                                  !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password.value) ? 
+                                  "Password should contain at least one uppercase letter, one lowercase letter, and one digit" : "";
+    });
+    cpassword.addEventListener('input', function () {
+      errorcpassword.innerHTML = cpassword.value.trim() === "" ? "Please enter password" : 
+                                  (cpassword.value !== password.value) ? "Passwords do not match" : "";
+    });
+  });
+
+function validationChecking(event) {
+  const user_name = document.getElementById("user_name");
+  const errorName = document.getElementById("errorName");
+  const user_phone = document.getElementById("user_phone");
+  const errorMobile = document.getElementById("errorMobile");
+  const fileUpload = document.getElementById("fileUpload");
+  const errorfileUpload = document.getElementById("errorfileUpload");
+
+  errorName.innerHTML =
+    user_name.value.trim() === ""
+      ? "Please enter user name"
+      : /^[a-zA-Z ]+$/.test(user_name.value) == false
+      ? "Please enter alphabets only"
+      : "";
+  errorMobile.innerHTML =
+    user_phone.value.trim() === ""
+      ? "Please enter user phone number"
+      : /^\d{10}$/.test(user_phone.value) == false
+      ? "Please enter valid phone number"
+      : "";
+
+  const uploadedFile = fileUpload.files[0];
+  const existingImage = document.getElementById("previewImage");
+  const defaultImageSrc = existingImage.getAttribute("src");
+  const allowedTypes = [
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "image/bmp",
+  "image/webp",
+
+];
+
+  if (uploadedFile) {
+    if (!allowedTypes.includes(uploadedFile.type)) {
+      errorfileUpload.innerHTML = "Please upload a valid image file (JPEG, PNG, GIF)";
+ 
+      return false;
+    }
+  } else {
+    // If no new file is selected, maintain the existing image
+    existingImage.setAttribute("src", defaultImageSrc);
+  }
+
+  if (errorName.innerHTML || errorMobile.innerHTML) return false;
+  
+  return true;
+}
+function validationPasswordChecking(event) {
+  const currentPassword = document.getElementById("currentPassword");
+  const password = document.getElementById("password");
+  const errorCurrentPassword = document.getElementById("errorCurrentPassword");
+  const errorpassword = document.getElementById("errorpassword");
+  const cpassword = document.getElementById("cpassword");
+  const errorcpassword = document.getElementById("errorcpassword");
+
+   // Reset error messages
+  errorCurrentPassword.innerHTML = "";
+  errorpassword.innerHTML = "";
+  errorcpassword.innerHTML = "";
+  
+  // Check if current password is empty
+  if (currentPassword.value.trim() === "") {
+    errorCurrentPassword.innerHTML = "Please enter your current password";
+    return false;
+  }
+
+  errorpassword.innerHTML = password.value.trim() === "" ? "Please enter password" : 
+                                password.value.length < 8 ? "Please enter a minimum of 8 characters" :
+                                !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password.value) ? 
+                                "Password should contain at least one uppercase letter, one lowercase letter, and one digit" : "";
+  errorcpassword.innerHTML = cpassword.value.trim() === "" ? "Please enter password" : 
+                                (cpassword.value !== password.value) ? "Passwords do not match" : "";
+
+  if (errorCurrentPassword.innerHTML || errorpassword.innerHTML || errorcpassword.innerHTML) {
+  return false;
+  }
+  return true;
+}
+
+ </script>
+          <%- include('../Layout/UserFooter.ejs') %>
+
+
+
+
+       

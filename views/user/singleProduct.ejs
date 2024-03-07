@@ -1,0 +1,202 @@
+
+
+<style>
+    /* Increase the size of the increment and decrement buttons */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        height: 50px;
+        /* Adjust the height as needed */
+        width: 60px;
+        /* Adjust the width as needed */
+    }
+
+    /* For Firefox */
+    /* input[type="number"] {
+        -moz-appearance: textfield;
+    } */
+
+
+
+.image-container {
+  /* width: 500px; */
+  height: 470px;
+    overflow: hidden;
+    /* border: 1px solid #ccc; Optional: Add a border for visualization */
+}
+
+.zoom-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.image-zoom {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s ease;
+}
+
+.image-zoom:hover {
+    transform: scale(1.8); /* Adjust the scale factor for zoom effect */
+}
+.thumbnail {
+    /* width: 50px; */
+    /* height: 50px; */
+    margin-right: 10px;
+    border: 1px solid black;  
+    border-radius: 10%;
+  }
+  .custom-col {
+    flex: 0 0 5.5%; /* Adjust the width percentage as needed */
+    max-width: 5.5%;
+  }
+
+</style>
+
+<%- include('../Layout/UserHeader.ejs') %>
+
+    <main class="main">
+        <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="index.html" rel="nofollow">Home</a>
+                    <span></span>Shop
+                    <span></span>Product
+                </div>
+            </div>
+        </div>
+        <section class="mt-50 mb-50">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-11">
+                        <div class="product-detail accordion-detail">
+                            <div class="row mb-50">
+                                <div class="col-1 custom-col d-flex  flex-column justify-content-center">
+                                    <% for (let i = 0; i < product.image.length; i++) {%>        
+                          
+                                    <img src='/assets/imgs/productIMG/<%= product.image[i]%>' onclick="changeMainImage('<%= product.image[i] %>')" alt="Thumbnail" class="my-3 thumbnail">
+                                    <% } %>        
+                          
+                                  </div>
+                                <div class="col-md-5 col-sm-12 col-xs-12">
+                                    <div class="mt-5">
+                           
+                                   
+                                      
+                                        <!-- THUMBNAILS -->
+                                   
+                                    </div>
+                                    <div class=" image-container">
+                                        <div class="zoom-container">
+                                            <img src='/assets/imgs/productIMG/<%= product.image[0]%>' id="mainImage" alt="Image" class="image-zoom">
+                                        </div>
+                                      </div>
+                                      <br>
+
+
+                                    <div class="social-icons single-share">
+                                        <ul class="text-grey-5 d-inline-block">
+                                            <li><strong class="mr-10">Join us on</strong></li>
+                                            <li class="social-facebook"><a href="#"><img
+                                                        src="/userassets/imgs/theme/icons/icon-facebook.svg" alt=""></a>
+                                            </li>
+                                            <li class="social-twitter"> <a href="#"><img
+                                                        src="/userassets/imgs/theme/icons/icon-twitter.svg" alt=""></a>
+                                            </li>
+                                            <li class="social-instagram"><a href="#"><img
+                                                        src="/userassets/imgs/theme/icons/icon-instagram.svg"
+                                                        alt=""></a></li>
+                                            <li class="social-linkedin"><a href="#"><img
+                                                        src="/userassets/imgs/theme/icons/icon-pinterest.svg"
+                                                        alt=""></a></li>
+                                        </ul>
+                                    </div>  
+                                </div>
+                                <div class="col-md-6 col-sm-12 col-xs-12">
+                                    <div class="detail-info">
+                                        <h2 class="title-detail">
+                                            <%= product.name %>
+                                        </h2>
+                                        <div class="product-detail-rating">
+                                            <!-- <div class="pro-details-brand">
+                                                <span> Brands: <a href="shop-grid-right.html">Bootstrap</a></span>
+                                            </div> -->
+                                            <div class="product-rate-cover text-end">
+                                                <div class="product-rate d-inline-block">
+                                                    <div class="product-rating" style="width:90%">
+                                                    </div>
+                                                </div>
+                                           
+                                            </div>
+                                        </div>
+                                        <div class="clearfix product-price-cover">
+                                            <div class="product-price primary-color float-left">
+                                                <ins><span class="text-brand">₹<%= product.price %>
+                                                    </span></ins>
+                                              
+                                            </div>
+                                        </div>
+                                        <div class="bt-1 border-color-1 mt-15 mb-15"></div>
+                                        <div class="short-desc mb-30">
+                                            
+                                             <p><%= product.description %></p>
+                                           
+                                        </div>
+                                        <div class="product_sort_info font-xs mb-30">
+                                            <ul>
+                                                <li class="mb-10"><i class="fi-rs-refresh mr-5"></i> 30 Days Return
+                                                    Policy</li>
+                                                <li class="mb-10"><i class="fi-rs-credit-card mr-5"></i> Cash on Delivery available
+                                                </li>
+                                                <li class="mb-10"><i class="fi-rs-crown mr-5"></i> Made in India</li>
+                                            </ul>
+                                        </div>
+
+                                    
+                                     
+
+
+                                        <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                                        <form action="/cart" method="post">
+                                            <input type="hidden" value="<%= product._id %>"name="productData_id" id="">
+                                            <div class="detail-extralink">
+                                                <input type="number" name="qty" class="w-25 py-4" value="1" min="1" max="1">
+                                                <br>
+                                                <br>
+                                                <div class="product-extra-link2 w-50 my-1">
+                                                    <button type="submit" class=" btn-product btn-cart"><span>Add To Cart</span></button>
+    
+    
+                                                    <button aria-label="Add To Wishlist" class=" btn action-btn hover-up p-3  "
+                                                        ><i class="fi-rs-heart  "></i></button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!-- Detail Info -->
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                  
+                </div>
+            </div>
+        </section>
+    </main>
+    <script>
+
+function changeMainImage(imageUrl) {
+    const mainImage = document.getElementById('mainImage');
+    mainImage.src = `/assets/imgs/productIMG/${imageUrl}`;
+    }
+    document.querySelector('.image-zoom').addEventListener('mousemove', function(e) {
+      const { left, top, width, height } = this.getBoundingClientRect();
+      const x = (e.clientX - left) / width * 100;
+      const y = (e.clientY - top) / height * 100;
+
+      this.style.transformOrigin = `${x}% ${y}%`;
+    });
+    </script>
+  
+    <%- include('../Layout/UserFooter.ejs') %>

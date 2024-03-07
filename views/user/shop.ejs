@@ -1,0 +1,255 @@
+<%- include('../Layout/UserHeader.ejs') %>
+
+    <!-- search bar -->
+    <div class="search-style-2 pt-3">
+      <form action="#">
+          <input id="searchInput" type="text" placeholder="Search for items...">
+      </form>
+  </div>
+
+<main class="main">
+  <div class="page-header breadcrumb-wrap">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="index.html" rel="nofollow">Home</a>
+        <span></span> Shop
+      </div>
+    </div>
+  </div>
+  <section class="mt-50 mb-50">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-lg-9">
+          <div class="shop-product-fillter">
+            <div class="totall-product">
+              <h3>
+                Premium Planters <strong class="text-brand"> & </strong> Home Decors...
+              </h3>
+              <br>
+              <p>Nothing  beats  the  refreshing  and  calming  presence  of  plants  in  our  living  spaces.</p>
+            </div>
+            <br>
+            <div class="sort-by-product-area"></div>
+          </div>
+
+          <div id="noResultsMessage" style="display: none; font-weight: bold; font-size: 18px;">No results found</div>
+
+          <div class="row product-grid-3">
+            <% for (const product of products) { 
+               const categoryId =
+            product.category; 
+            categories.forEach(category => { if
+            (categoryId.toString() === category._id.toString()) { if
+            (category.is_listed) { 
+          
+              if (product.is_listed ) {
+                %>
+  
+            <div class="col-lg-4 col-md-4 col-12 col-sm-6">
+              <div class="product-cart-wrap mb-30">
+                <div class="product-img-action-wrap">
+                  <div class="product-img product-img-zoom">
+                    <a href="/singleProduct/<%= product._id%>">
+                      <img
+                        class="default-img equal-height-img"
+                        src="/assets/imgs/productIMG/<%= product.image[0]%>"
+                        alt=""
+                      />
+                      <img
+                        class="hover-img equal-height-img"
+                        src="/assets/imgs/productIMG/<%= product.image[1]%>"
+                        alt=""
+                      />
+                    </a>
+                  </div>
+
+                  <div
+                    class="product-badges product-badges-position product-badges-mrg"
+                  >
+                    <!-- <span class="hot">New</span> -->
+                  </div>
+                </div>
+                <div class="product-content-wrap">
+                  <div class="product-category">
+                    <!-- <a href="shop-grid-right.html">Planter</a> -->
+                  </div>
+                  <h2><a href="/singleProduct/<%= product._id%>"><%= product.name %></a></h2>
+                  <div class="rating-result" title="90%">
+                    <span>
+                      <%if(product.discountStatus==true &&new Date() <= new Date(product.discountEnd)  ){%>
+                        <% const percentageOff = ((product.price - product.discountPrice) / product.price) * 100; %>
+                        <span style="font-size: 16px; background-color: rgb(255, 255, 255); border-radius: 2px; padding: 5px 10px 5px 10px;" class="old-price ml-3 text-success">- <%= percentageOff.toFixed(2) %>% OFF</span>
+                    <%}%>
+                    </span>
+                  </div>
+                  <div class="product-price">
+                    <% if (product.discountStatus && new Date() <= new Date(product.discountEnd) ) { %>
+                      <span>₹<%= product.discountPrice %> </span>
+                      <span class="old-price">- ₹<s><%= product.price %></s></span>
+                    <% } else { %>
+                      <span> ₹<%= product.price %></span>
+                    <% } %>
+                  </div>
+                  
+                  <form id="myForm" action="/cart" method="post">                   
+    <div class="product-action-1 show">
+        <input type="hidden" value="<%= product._id %>" name="productData_id"> 
+        <input type="hidden" value="1" name="qty">
+        <a href="/cart">
+        <button type="button" aria-label="Add To Cart" class="action-btn hover-up">
+            <i class="fi-rs-shopping-bag-add" ></i>
+        </button>
+      </a>
+    </div>
+   </form>
+                </div>
+              </div>
+            </div>
+
+            <% }} } }); } %>
+          </div>
+        </div>
+
+        
+
+        <div class="col-lg-3 primary-sidebar sticky-sidebar">
+          <div class="row">
+            <div class="col-lg-12 col-mg-6"></div>
+            <div class="col-lg-12 col-mg-6"></div>
+          </div>
+          <div class="widget-category mb-30">
+            <h5 class="section-title style-1 mb-30 wow fadeIn animated">
+              Category
+            </h5>
+
+            <ul class="categories">
+              <li><a href="/shop"><option value="">All Products</option></a></li>
+              <% categories.forEach(category=> { if (category.is_listed) { %>
+
+              <li>
+                <a href="shopCategoryFilter?id=<%= category._id %>" >
+                  <option value="<%= category._id %>">
+                    <%= category.name %>
+                  </option></a
+                >
+              </li>
+
+              <% } }); %>
+            </ul>
+          </div>
+
+      </div>
+    </div>
+
+      <!-- Pagination Section -->
+
+      <nav class="mt-4" aria-label="Page navigation">
+        <ul class="pagination">
+          <% if (currentPage > 1) { %>
+            <li class="page-item">
+              <a class="page-link" href="?page=<%= currentPage - 1 %>" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+          <% } %>
+
+          <% for (let i = 1; i <= totalPages; i++) { %>
+            <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+              <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+            </li>
+          <% } %>
+
+          <% if (currentPage < totalPages) { %>
+            <li class="page-item">
+              <a class="page-link" href="?page=<%= currentPage + 1 %>" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          <% } %>
+        </ul>
+      </nav>
+
+
+  </section>
+
+</main>
+
+
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("searchInput");
+    const categorySelect = document.querySelector(".select-active"); // Selecting the category dropdown
+    const products = document.querySelectorAll(".product-cart-wrap"); // Selecting product cards
+    const noResultsMessage = document.getElementById("noResultsMessage"); // Selecting the element to display "No results found" message
+
+    searchInput.addEventListener("input", function () {
+        const searchText = searchInput.value.toLowerCase();
+        const selectedCategory = categorySelect.value.toLowerCase();
+        let hasResults = false; // Flag to track if any results are found
+
+        for (let i = 0; i < products.length; i++) {
+            const productName = products[i].querySelector("h2 a").textContent.toLowerCase();
+            const productCategory = products[i].querySelector(".product-category").textContent.toLowerCase(); // Assuming product category is in an element with class "product-category"
+
+            const isSearchTextMatch = !searchText || productName.includes(searchText);
+            const isCategoryMatch = selectedCategory === 'all categories' || productCategory === selectedCategory;
+
+            if (isSearchTextMatch && isCategoryMatch) {
+                products[i].style.display = "";
+                hasResults = true;
+            } else {
+                products[i].style.display = "none";
+            }
+        }
+
+        // Display "No results found" message if no matching products were found
+        if (!hasResults) {
+            noResultsMessage.style.display = "block";
+        } else {
+            noResultsMessage.style.display = "none";
+        }
+    });
+
+    categorySelect.addEventListener("change", function () {
+        const searchText = searchInput.value.toLowerCase();
+        const selectedCategory = categorySelect.value.toLowerCase();
+        let hasResults = false; // Flag to track if any results are found
+
+        for (let i = 0; i < products.length; i++) {
+            const productName = products[i].querySelector("h2 a").textContent.toLowerCase();
+            const productCategory = products[i].querySelector(".product-category").textContent.toLowerCase(); // Assuming product category is in an element with class "product-category"
+
+            const isSearchTextMatch = !searchText || productName.includes(searchText);
+            const isCategoryMatch = selectedCategory === 'all categories' || productCategory === selectedCategory;
+
+            if (isSearchTextMatch && isCategoryMatch) {
+                products[i].style.display = "";
+                hasResults = true;
+            } else {
+                products[i].style.display = "none";
+            }
+        }
+
+        // Display "No results found" message if no matching products were found
+        if (!hasResults) {
+            noResultsMessage.style.display = "block";
+        } else {
+            noResultsMessage.style.display = "none";
+        }
+    });
+});
+
+
+  function submitForm() {
+    var form = document.getElementById("myForm");
+        form.submit();
+  }
+
+  </script>
+
+
+<%- include('../Layout/UserFooter.ejs') %>
