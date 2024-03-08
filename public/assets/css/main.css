@@ -160,16 +160,16 @@ input:focus::-moz-placeholder {
   transition: 0.4s;
 }
 ::-webkit-input-placeholder {
-  color: #565454;
+  color: #323131;
 }
 :-ms-input-placeholder {
-  color: #565454;
+  color: #363636;
 }
 ::-ms-input-placeholder {
-  color: #565454;
+  color: #363636;
 }
 ::placeholder {
-  color: #565454;
+  color: #363636;
 }
 .fix {
   overflow: hidden;
@@ -245,11 +245,11 @@ input[type="number"]:focus,
   font-size: 18px;
 }
 hr {
-  color: #a6acb3 !important;
+  color: #848c94 !important;
 }
 table {
   font-size: 13px;
-  color: #565454 !important;
+  color: #363636 !important;
 }
 table thead {
   background: #f7f8f9;
@@ -269,7 +269,7 @@ table .form-check {
   padding: 0.8rem 1rem;
 }
 .table-light {
-  color: #565454 !important;
+  color: #363636 !important;
 }
 .shadow {
   -webkit-box-shadow: 0 0.75rem 1.5rem rgba(18, 38, 63, 0.03);
@@ -414,7 +414,7 @@ table .form-check {
   transition-duration: 0.3s;
 }
 .border-end {
-  border-right: 1px solid #eee !important;
+  border-right: 1px solid #736e6e !important;
 }
 .mw-200 {
   max-width: 200px;
@@ -461,7 +461,7 @@ h4,
 h5,
 h6 {
   font-family: "Spartan", sans-serif;
-  color: #495057;
+  color: #373c41;
   font-weight: 600;
   line-height: 1.5;
 }

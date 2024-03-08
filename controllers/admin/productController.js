@@ -48,7 +48,7 @@ const addProduct = async (req, res) => {
 
       const croppedImage = await sharp(file.path)
         .resize(400, 400, {
-          fit: "cover",
+          fit: "cover", 
         })
         .toFile(imagePath);
 
