@@ -54,17 +54,16 @@
                                             <% } %>
                                         </td>
 
+                                       
+
                                         <td class="text-center" data-title="Stock">
                                             <div class="cart-product-quantity">
-                                                <input type="number" class="form-control" name="qty" value="<%= cartData.quantity %>" min="1" max="<%= cartData.product.quantity %>" step="1" 
-                                                data-decimals="0" required readonly>
-                                                <% if (outOfStockError && productTotal[index] > product.quantity) { %>
-                                                    <p style="color: red; font-size: 12px; margin-top: 5px;">Out of stock</p>
-                                                <% } %>
-                                                <% if (maxQuantityErr && cartData.quantity > 2) { %>
-                                                    <p style="color: red; font-size: 12px; margin-top: 5px;">Maximum quantity exceeded</p>
-                                                <% } %>
+                                            <div class="input-group input-group-sm">
+                                                <button class="btn btn-outline-secondary btn-sm " type="button" onclick="decreaseQuantity('<%= cartData.product._id %>')">-</button>
+                                                <input type="number" readonly class="form-control form-control-sm text-center" name="qty" value="<%= cartData.quantity %>" min="1" max="<%= cartData.product.quantity %>" step="1" data-decimals="0" required onchange="updateCart('<%= cartData.product._id %>', this.value)">
+                                                <button class="btn btn-outline-secondary btn-sm" type="button" onclick="increaseQuantity('<%= cartData.product._id %>')">+</button>
                                             </div>
+                                        </div>
                                         </td>
 
                                         <td class="text-right" data-title="Cart">
@@ -180,6 +179,7 @@
             console.error('Error removing cart item:', error);
         });
     }
+    
 
     function updateCart(productId, newQuantity) {
         fetch(`/updateCart?productId=${productId}&quantity=${newQuantity}`, {
@@ -187,17 +187,39 @@
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Update cart response:', data);
             if (data.success) {
-                // If the update was successful, reload the page to reflect changes
-                location.reload();
-            } else {
+                 location.reload();
+               
+
+            }
+          else {
                 console.error('Failed to update cart:', data.error);
             }
         })
         .catch(error => {
             console.error('Error updating cart:', error);
         });
+    }
+
+
+   
+
+    function increaseQuantity(productId) {
+        var inputElement = $(`input[name="qty"]`);
+        var currentQuantity = parseInt(inputElement.val());
+        if (currentQuantity < 10) {
+            inputElement.val(currentQuantity + 1);
+            updateCart(productId, currentQuantity + 1);
+        }
+    }
+
+    function decreaseQuantity(productId) {
+        var inputElement = $(`input[name="qty"]`);
+        var currentQuantity = parseInt(inputElement.val());
+        if (currentQuantity > 1) {
+            inputElement.val(currentQuantity - 1);
+            updateCart(productId, currentQuantity - 1);
+        }
     }
 </script>
 
