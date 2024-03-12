@@ -57,7 +57,7 @@
                                         <td class="text-center" data-title="Stock">
                                             <div class="cart-product-quantity">
                                                 <input type="number" class="form-control" name="qty" value="<%= cartData.quantity %>" min="1" max="<%= cartData.product.quantity %>" step="1" 
-                                                data-decimals="0" required>
+                                                data-decimals="0" required readonly>
                                                 <% if (outOfStockError && productTotal[index] > product.quantity) { %>
                                                     <p style="color: red; font-size: 12px; margin-top: 5px;">Out of stock</p>
                                                 <% } %>
