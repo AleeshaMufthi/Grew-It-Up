@@ -67,6 +67,7 @@ userRoute.post('/checkout',islogin,orderController.checkOutPost );
 userRoute.get('/orderSuccess',islogin,orderController.loadOrderDetails );
 userRoute.get('/orderDetails/:id',islogin,orderController.loadOrderHistory );
 userRoute.post('/orderCancel',islogin,orderController.orderCancel );
+userRoute.post('/return',islogin,orderController.returnData);
 
 // PAYMENT
 userRoute.post('/razorpayOrder',islogin,orderController.razorpayOrder );

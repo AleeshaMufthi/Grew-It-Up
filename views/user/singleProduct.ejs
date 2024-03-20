@@ -160,16 +160,14 @@
                                         <form action="/cart" method="post">
                                             <input type="hidden" value="<%= product._id %>"name="productData_id" id="">
                                             <div class="detail-extralink">
-                                                <input type="number" name="qty" class="w-25 py-4" value="1" min="1" max="1">
+                                                <input type="number" name="qty" id="qty" class="w-25 py-4" value="1" min="1" max="10">
                                                 <br>
                                                 <br>
                                                 <div class="product-extra-link2 w-50 my-1">
-                                                    <button type="submit" class=" btn-product btn-cart"><span>Add To Cart</span></button>
-    
-    
-                                                    <button aria-label="Add To Wishlist" class=" btn action-btn hover-up p-3  "
-                                                        ><i class="fi-rs-heart  "></i></button>
+                                                   
+                                                    <button type="button" onclick="addToCart()" class="btn-product btn-cart" style="border-radius: 20px; padding: 10px 20px; background-color: #9B4100; color: #fff; border: none; cursor: pointer;" onmouseover="this.style.backgroundColor='#411b00'" onmouseout="this.style.backgroundColor='#723000'"><span>Add To Cart</span></button>
                                                 </div>
+                                                <div id="errorMessage" style="color: red; display: none;">Quantity exceeds! Available stock is <%= availableStock %></div>
                                             </div>
                                         </form>
                                     </div>
@@ -197,6 +195,20 @@ function changeMainImage(imageUrl) {
 
       this.style.transformOrigin = `${x}% ${y}%`;
     });
+
+    function addToCart() {
+        const qty = parseInt(document.getElementById('qty').value);
+        const availableStock = parseInt('<%= availableStock %>'); // Get available stock from server-side rendering
+        const errorMessage = document.getElementById('errorMessage');
+
+        if (qty > availableStock) {
+            errorMessage.style.display = 'block';
+        } else {
+            errorMessage.style.display = 'none';
+            // Proceed with form submission
+            document.querySelector('form').submit();
+        }
+    }
     </script>
   
   <%- include('../layout/userFooter.ejs') %>

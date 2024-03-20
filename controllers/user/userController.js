@@ -402,7 +402,10 @@ const loadSingleShop = async (req, res) => {
       return res.status(404).send('Categories not found');
     }
 
-    res.render("user/singleProduct", { userData, product, categories });
+        // Pass the available stock quantity to the template
+        const availableStock = product.quantity;
+
+    res.render("user/singleProduct", { userData, product, categories, availableStock });
   } catch (error) {
     console.log(error.message);
     return res.status(404).render("layout/404Error", { userData: null });

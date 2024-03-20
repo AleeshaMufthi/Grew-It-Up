@@ -16,7 +16,7 @@
     <div class="page-header breadcrumb-wrap">
         <div class="container">
             <div class="breadcrumb">
-                <a href="index.html" rel="nofollow">Home</a>
+                <a href="#" rel="nofollow">Home</a>
                 <span></span> Shop
                 <span></span> Your Cart
             </div>
@@ -56,14 +56,17 @@
 
                                        
 
-                                        <td class="text-center" data-title="Stock">
+                                        <td class="text-center" data-title="Quantity">
                                             <div class="cart-product-quantity">
-                                            <div class="input-group input-group-sm">
-                                                <button class="btn btn-outline-secondary btn-sm " type="button" onclick="decreaseQuantity('<%= cartData.product._id %>')">-</button>
-                                                <input type="number" readonly class="form-control form-control-sm text-center" name="qty" value="<%= cartData.quantity %>" min="1" max="<%= cartData.product.quantity %>" step="1" data-decimals="0" required onchange="updateCart('<%= cartData.product._id %>', this.value)">
-                                                <button class="btn btn-outline-secondary btn-sm" type="button" onclick="increaseQuantity('<%= cartData.product._id %>')">+</button>
+                                                <div class="input-group input-group-sm">
+                                                    <button class="btn btn-outline-secondary btn-sm" type="button" onclick="decreaseQuantity('<%= cartData.product._id %>')">-</button>
+                                                    <!-- Set the value of the input field to the current quantity -->
+                                                    <input type="number" readonly class="form-control form-control-sm text-center" name="qty" value="<%= cartData.quantity %>" min="1" max="10" step="1" data-decimals="0" required onchange="updateCart('<%= cartData.product._id %>', this.value)">
+                                                    <button class="btn btn-outline-secondary btn-sm" type="button" onclick="increaseQuantity('<%= cartData.product._id %>')">+</button>
+                                                </div>
+                                                
                                             </div>
-                                        </div>
+                                    
                                         </td>
 
                                         <td class="text-right" data-title="Cart">
@@ -71,7 +74,10 @@
                                         </td>
 
                                         <td>
-                                            <button type="button" onclick="confirmRemoveCartItem('<%= cartData.product._id %>');"><i class="fi-rs-trash"></i></button>
+                                            <button type="button" onclick="confirmRemoveCartItem('<%= cartData.product._id %>');" style="background-color: #966441; color: #fff; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">
+                                                <i class="fi-rs-trash"></i> Remove Item
+                                             </button>
+                
                                         </td>
 
                                     </tr>
@@ -97,7 +103,6 @@
                     
 
                     </div>
-
 
                     <div class="cart-action text-end">
                         <a class="btn" href="/shop"><i class="fi-rs-shopping-bag mr-10"></i>Continue Shopping</a>
@@ -180,7 +185,6 @@
         });
     }
     
-
     function updateCart(productId, newQuantity) {
         fetch(`/updateCart?productId=${productId}&quantity=${newQuantity}`, {
             method: 'PUT',
@@ -201,10 +205,7 @@
         });
     }
 
-
-   
-
-    function increaseQuantity(productId) {
+function increaseQuantity(productId) {
         var inputElement = $(`input[name="qty"]`);
         var currentQuantity = parseInt(inputElement.val());
         if (currentQuantity < 10) {

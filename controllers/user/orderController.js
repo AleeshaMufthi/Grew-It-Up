@@ -438,11 +438,11 @@ const returnData = async (req, res) => {
 
     if (walletData) {
 
-      walletData.walletBalance +=(product.price * product.quantity)- (product.price * product.quantity)*(couponData.discount)/100;
+      walletData.walletBalance +=(product.price * product.quantity)- (product.price * product.quantity)*(couponData)/100;
    
       walletData.transaction.push({
         type: "credit",
-        amount:(product.price * product.quantity)- (product.price * product.quantity)*(couponData.discount)/100,
+        amount:(product.price * product.quantity)- (product.price * product.quantity)*(couponData)/100,
       });
     
       await walletData.save(); 
@@ -451,8 +451,8 @@ const returnData = async (req, res) => {
 
       const wallet = new Wallet({
         user: user_id,
-        transaction:[{type:"credit",amount: (product.price * product.quantity)- (product.price * product.quantity)*(couponData.discount)/100}],
-        walletBalance:  (product.price * product.quantity)- (product.price * product.quantity)*(couponData.discount)/100
+        transaction:[{type:"credit",amount: (product.price * product.quantity)- (product.price * product.quantity)*(couponData)/100}],
+        walletBalance:  (product.price * product.quantity)- (product.price * product.quantity)*(couponData)/100
     });
 
     await wallet.save();
@@ -462,7 +462,7 @@ const returnData = async (req, res) => {
     product.status = "Returned";
     product.paymentStatus = "Refunded";
     product.reason = reason;
-    totalAmount =totalAmount -(product.price * product.quantity)- (product.price * product.quantity)*(couponData.discount)/100;
+    totalAmount =totalAmount -(product.price * product.quantity)- (product.price * product.quantity)*(couponData)/100;
 
   }
 
