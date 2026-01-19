@@ -6,6 +6,7 @@ const sendVarifyMail = async (req,email) => {
     try {
  
       const otp = generateOTP(4); 
+      console.log(otp, 'Generated OTP')
       req.session.otp = otp;
       console.log( req.session.otp,"otp",email)
 
